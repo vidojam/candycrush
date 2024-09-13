@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const width = 8;
     const squares = [];
 
+
     const candyColors = [
         'red',
         'yellow',
