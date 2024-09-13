@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     const grid = document.querySelector('.grid');
     const width = 8;
     const squares = [];
@@ -14,22 +15,63 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Create Board
     function createBoard() {
-        // loop 64 times
         for (let i = 0; i < width * width; i++) {
-            // create a div
             const square = document.createElement('div');
-            // make the div draggable
             square.setAttribute('draggable', true);
-            // set the div id
             square.setAttribute('id', i);
             let randomColor = Math.floor(Math.random() * candyColors.length);
             square.style.backgroundColor = candyColors[randomColor];
-            // add the div to the grid
             grid.appendChild(square);
             squares.push(square);
         }
     }
     createBoard();
 
+    let colorBeingDragged;
+    let colorBeingReplaced;
+    let squareIdBeingDragged;
+    let squareIdBeingReplaced;
 
-})
+    // Add event listeners for drag events
+    squares.forEach(square => square.addEventListener('dragstart', dragStart));
+    squares.forEach(square => square.addEventListener('dragend', dragEnd));
+    squares.forEach(square => square.addEventListener('dragover', dragOver));
+    squares.forEach(square => square.addEventListener('dragenter', dragEnter));
+    squares.forEach(square => square.addEventListener('dragleave', dragLeave));
+    squares.forEach(square => square.addEventListener('drop', dragDrop));
+
+    function dragStart() {
+        colorBeingDragged = this.style.backgroundColor;
+        squareIdBeingDragged = parseInt(this.id);
+        console.log(colorBeingDragged);
+        console.log(this.id, 'dragstart');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        console.log(this.id, 'dragover');
+    }
+
+    function dragEnter(e) {
+        e.preventDefault();
+        console.log(this.id, 'dragenter');
+    }
+
+    function dragLeave() {
+        console.log(this.id, 'dragleave');
+    }
+
+    function dragEnd() {
+        console.log(this.id, 'dragend');
+    }
+
+    function dragDrop() {
+        console.log(this.id, 'dragdrop');
+        colorBeingReplaced = this.style.backgroundColor;
+        squareIdBeingReplaced = parseInt(this.id);
+        squares[squareIdBeingDragged].style.backgroundColor = colorBeingReplaced;
+        squares[squareIdBeingReplaced].style.backgroundColor = colorBeingDragged;
+    }
+});
+
+
